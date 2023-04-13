@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import toolSlice from './toolSlice';
-import canvasSlice from './canvasSlice';
+import toolSlice from './reducers/toolSlice';
+import canvasSlice from './reducers/canvasSlice';
+import userSlice from './reducers/UserSlice';
 
 const reducers = combineReducers({
     toolSlice,
-    canvasSlice
+    canvasSlice,
+    userSlice
 })
 
 export const store = configureStore({

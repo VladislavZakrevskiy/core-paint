@@ -1,12 +1,13 @@
 import React, { ChangeEvent } from 'react'
 import '../styles/toolbar.scss'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { setFillColor, setStrokeColor, setTool } from '../store/toolSlice'
+import { setFillColor, setStrokeColor, setTool } from '../store/reducers/toolSlice'
 import Brush from '../tools/Brush'
 import Rect from '../tools/Rect'
 import Eraser from '../tools/Eraser'
 import Circle from '../tools/Circle'
 import Line from '../tools/Line'
+import undoRedo from '../tools/UndoRedo'
 
 type Props = {}
 
@@ -57,11 +58,11 @@ const ToolBar = (props: Props) => {
           />
         <button 
           className='toolbar_btn undo'
-          onClick={() => tool?.undo()}
+          onClick={() => undoRedo.sendUndoMsg(id, socket)}
           />
         <button 
           className='toolbar_btn redo'
-          onClick={() => tool?.redo()}
+          onClick={() => undoRedo.sendRedoMsg(id, socket)}
           />
         <button 
           className='toolbar_btn save'

@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import React from 'react';
-import { useAppDispatch } from './hooks';
-import { loadImage } from './loadImage';
-import undoRedo from '../tools/UndoRedo';
+import { useAppDispatch } from '../hooks';
+import undoRedo from '../../tools/UndoRedo';
 
 interface State {
     canvas:  HTMLCanvasElement | null,

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import Tool from '../tools/Tool';
+import Tool from '../../tools/Tool';
 import { undo } from './canvasSlice';
 
 interface State {

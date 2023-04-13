@@ -22,6 +22,12 @@ app.ws('/', (ws, req) => {
             case 'draw': 
                 broadcastConnection(ws, msg)
                 break;
+            case 'users':
+                broadcastUsersConnection(ws, msg)
+                break;
+            case 'undoRedo':
+                broadcastConnection(ws, msg)
+                break;
         }
     })
 })
@@ -55,6 +61,7 @@ app.listen(PORT, () => console.log('server started on ' + PORT))
 
 const connnectionHandler = (ws, msg) => {
     ws.id = msg.id
+    ws.username = msg.username
     broadcastConnection(ws,msg)
 }
 
@@ -62,6 +69,28 @@ const broadcastConnection = (ws, msg) => {
     aWss.clients.forEach(client => {
         if(client.id == msg.id) {
             client.send(JSON.stringify(msg))
+        }
+    })
+}
+
+const broadcastUsersConnection = (ws, msg) => {
+    let users = []
+    aWss.clients.forEach(client => {
+        if(client.id == msg.id) {
+            users.push({
+                id: client.id,
+                username: client.username
+            })
+        }
+    })
+    aWss.clients.forEach(client => {
+        if(client.id == msg.id) {
+            client.send(JSON.stringify({
+                id: msg.id,
+                method: 'users',
+                username: msg.username,
+                users
+            }))
         }
     })
 }

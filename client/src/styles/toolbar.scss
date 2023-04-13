@@ -7,9 +7,10 @@
     display: flex;
     align-items: center;
     position: absolute;
+    top: 0;
     width: 100%;
     box-shadow: 0 4px 5px gray;
-    z-index: 10;
+    z-index: 2;
     background-size: cover;
 
     &_btn {

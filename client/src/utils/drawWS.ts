@@ -4,8 +4,9 @@ import Circle from "../tools/Circle"
 import Eraser from "../tools/Eraser"
 import Line from "../tools/Line"
 import Rect from "../tools/Rect"
+import undoRedo from "../tools/UndoRedo"
 
-export const drawHandler = (msg: drawMessage, canvas: HTMLCanvasElement) => {
+export const drawHandler = (msg: drawMessage, canvas: HTMLCanvasElement, tool: undoRedo) => {
     const figure = msg!.figure
     const ctx: CanvasRenderingContext2D | null = canvas!.getContext('2d')
     switch (figure.type){
@@ -26,6 +27,7 @@ export const drawHandler = (msg: drawMessage, canvas: HTMLCanvasElement) => {
         break
       case 'finish':
         ctx!.beginPath()
+        tool.pushUndo(canvas.toDataURL())
         break
     }
   }

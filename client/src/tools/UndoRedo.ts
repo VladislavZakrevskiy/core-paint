@@ -1,5 +1,4 @@
 import { IMessage } from "../models/message"
-import { setRedoList, setUndoList } from "../store/canvasSlice"
 
 export interface setter {
   undo: string[]
@@ -38,24 +37,10 @@ export default class undoRedo {
 
     pushUndo(canvasURL: string) {
         this.undoList.push(canvasURL)
-      //   const undoRedoMsg: IMessage = {
-      //     id: this.id,
-      //     method: 'undoRedo',
-      //     redo: this.redoList,
-      //     undo: this.undoList
-      // }
-      // this.socket?.send(JSON.stringify(undoRedoMsg))
     }
 
     pushRedo(canvasURL: string) {
         this.redoList.push(canvasURL)
-      //   const undoRedoMsg: IMessage = {
-      //     id: this.id,
-      //     method: 'undoRedo',
-      //     redo: this.redoList,
-      //     undo: this.undoList
-      // }
-      // this.socket?.send(JSON.stringify(undoRedoMsg))
     }
 
     undo() {
@@ -71,11 +56,21 @@ export default class undoRedo {
             this.ctx?.clearRect(0,0,this.canvas.width, this.canvas.height)
             //@ts-ignore
             this.ctx?.drawImage(img, 0,0,this.canvas.width, this.canvas.height)
-            } 
+            }
           } else {
             //@ts-ignore
             this.ctx?.clearRect(0,0,this.canvas.width, this.canvas.height)
           }
+
+    }
+
+    static sendUndoMsg (id: string, socket: WebSocket) {
+      const msg: IMessage = {
+        id: id,
+        method: 'undoRedo',
+        type: 'undo'
+      }
+      socket?.send(JSON.stringify(msg))
     }
 
 
@@ -95,5 +90,15 @@ export default class undoRedo {
             //@ts-ignore
             this.ctx?.clearRect(0,0,this.canvas.width, this.canvas.height)
           }
+    }
+
+    static sendRedoMsg (id: string, socket: WebSocket) {
+      const msg: IMessage = {
+        id: id,
+        method: 'undoRedo',
+        type: 'redo'
+      }
+      console.log(msg )
+      socket?.send(JSON.stringify(msg))
     }
 }

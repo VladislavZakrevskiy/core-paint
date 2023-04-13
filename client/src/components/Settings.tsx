@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/toolbar.scss'
 import { useAppDispatch } from '../store/hooks'
-import { setLineWidth, setStrokeColor } from '../store/toolSlice'
+import { setLineWidth, setStrokeColor } from '../store/reducers/toolSlice'
 
 type Props = {}
 

@@ -45,6 +45,17 @@ export default class Rect extends Tool {
             }
         }
         this.socket?.send(JSON.stringify(msg))
+
+        const finish: drawMessage = {
+            id: this.id,
+            method: 'draw',
+            figure: {
+                type: 'finish',
+                x: this.startX,
+                y: this.startY
+            }
+        }
+        this.socket?.send(JSON.stringify(finish))
     }
 
     mouseDownHandler(e: MouseEvent) {

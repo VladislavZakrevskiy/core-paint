@@ -1,13 +1,15 @@
+import { IUser } from '../models/IUser';
 import { IMessage, connectionMessage, drawMessage } from '../models/message';
-import { setSocket } from '../store/canvasSlice';
-import { useAppDispatch } from '../store/hooks';
-import { setTool } from '../store/toolSlice';
+import { pushUsers, setUsers } from '../store/reducers/UserSlice';
+import { setSocket } from '../store/reducers/canvasSlice';
+import { setTool } from '../store/reducers/toolSlice';
 import Brush from '../tools/Brush';
 import undoRedo from '../tools/UndoRedo';
+import { ConnectionWS } from './connectionWS';
 import { drawHandler } from "./drawWS"
 
 
-export const connectWS = (username: string | null, id: string | undefined, dispatch: any, canvas: HTMLCanvasElement, tool: undoRedo) => {
+export const connectWS = (username: string | null, id: string , dispatch: any, canvas: HTMLCanvasElement, tool: undoRedo, users: IUser[]) => {
     if( username ) {
         const socket = new WebSocket('ws://localhost:5000/')
         dispatch(setSocket(socket))
@@ -23,19 +25,24 @@ export const connectWS = (username: string | null, id: string | undefined, dispa
         socket.onmessage = (ev) => {
           const msg: IMessage = JSON.parse(ev.data)
           switch(msg.method) {
-            case 'connection': 
-              console.log(`User ${msg.username} is connected`)
+            case 'connection':                
+              ConnectionWS(socket, msg, username, users)
               break;
             case 'draw': 
-              drawHandler(msg, canvas)
-              tool.pushUndo(canvas.toDataURL())
+              //@ts-ignore
+              drawHandler(msg, canvas, tool)
               break;
+            case 'users': 
+              //@ts-ignore
+              dispatch(setUsers(msg.users))
+             break;
             case 'undoRedo': 
-              // tool.setUndoRedo = {
-              //   redo: msg.redo,
-              //   undo: msg.undo
-              // }
-              console.log(msg)
+              if(msg.type == 'undo') {
+                tool.undo()
+              }
+              else {
+                tool.redo()
+              }
               break;
           }
         }

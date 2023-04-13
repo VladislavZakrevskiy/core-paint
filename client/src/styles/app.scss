@@ -12,4 +12,7 @@
     width: 100vw;
     min-width: 100vw;
     background-color: $background_color;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
 }

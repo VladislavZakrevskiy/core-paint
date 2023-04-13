@@ -1,11 +1,12 @@
+import { IUser } from "./IUser"
 
 
 export interface IMessage {
     id: string | undefined
     username?: string | null
-    method: 'connection' | 'draw' | 'undoRedo'
-    undo?:string[]
-    redo?:string[]
+    method: 'connection' | 'draw' | 'users' | 'undoRedo'
+    type?: 'undo' | 'redo',
+    users?: IUser[]
 }
 
 export interface connectionMessage extends IMessage {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { setUsername } from '../store/canvasSlice'
+import { setUsername } from '../store/reducers/canvasSlice'
 import { useAppDispatch } from '../store/hooks'
 import { Modal, Button } from 'react-bootstrap'
 
